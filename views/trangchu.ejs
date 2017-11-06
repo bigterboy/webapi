@@ -1,0 +1,559 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>BÀI TẬP VỀ NHÀ</title>
+
+</head>
+
+
+
+<body>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9uzqwU4pdSiNlWu9U10bF-MBldbz9Sqs&libraries=places"></script>
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+
+
+<div>
+    <span>Tìm kiếm địa chỉ: </span><input type="text" id="txtautocomplete" style="width:200px" placeholder="enter the adress"/>
+    <label id="lblresult"></label>
+
+
+    <br/>
+    <br/>
+
+    <div>
+        <!--<button id="test">CLICK HERE</button>-->
+        <input type="button" id="test" value="CÁC ĐỊA ĐIỂM XUNG QUANH"/>
+    </div>
+
+
+
+
+
+
+    <br/>
+    <br/>
+
+
+    <div id="instagram"></div>
+    <div id="instagram2"></div>
+
+
+
+
+
+
+
+
+
+    <footer>
+
+
+
+        <script type="text/javascript" src="js/jquery-min.js"></script>
+        <script>
+
+
+
+            var kinhdo,vido;
+            var kinhdostr,vidostr;
+            var idlocation =[];
+            var b = idlocation.length;
+            var tonghopduonglink;
+            var link;
+
+            google.maps.event.addDomListener(window, 'load', intilize);
+
+            function intilize() {
+                var autocomplete = new google.maps.places.Autocomplete(document.getElementById('txtautocomplete'));
+                google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                    var place = autocomplete.getPlace();
+                    var location = "<br/>Địa chỉ: " + place.formatted_address + "<br/>";
+                    location += "Kinh độ: " + place.geometry.location.lat() + "<br/>";
+                    location += "Vĩ độ: " + place.geometry.location.lng();
+                    kinhdo = place.geometry.location.lat();
+                    vido = place.geometry.location.lng();
+
+                    document.getElementById('lblresult').innerHTML = location;
+
+
+
+
+
+                });
+            };
+
+
+
+            //alert(kinhdo);
+
+
+
+
+
+            var kinhdostr = String(kinhdo);
+
+
+            /*                kinhdo_id: '48.858844',
+             vido_id: '2.294351',*/
+
+
+
+
+            window.Instagram = {
+
+                config:{},
+                BASE_URL: 'https://api.instagram.com/v1',
+                kinhdo_id: '48.858844',
+                vido_id: '2.294351',
+
+                init: function (opt) {
+                    opt = opt ||{};
+                    this.config.client_id = opt.client_id;
+                },
+
+                popular: function (callback) {
+                    var endpoint = this.BASE_URL + "/locations/search?lat="+kinhdo+"&lng="+vido+"&access_token=" + this.config.client_id;
+                    this.getJSON(endpoint,callback);
+                },
+                //locations/1015787542/media/recent?access_token=5742368319.e029fea.479a2b6e77814f78a45770275783e21d
+
+                layhinh:function (idtest,callback) {
+
+
+                    var endpoint = "https://api.instagram.com/v1/locations/"+idtest+"/media/recent?access_token=5742368319.e029fea.479a2b6e77814f78a45770275783e21d";
+
+                    console.log(endpoint);
+
+
+                    this.getJSON(endpoint,callback);
+                },
+
+
+
+                tagsByname: function (name, callback) {
+
+                    //var endpoint = this.BASE_URL + '/tags/' + name + '/media/recent?access_token=' + this.config.client_id;
+                    var endpoint = "https://api.instagram.com/v1/locations/"+name+"/media/recent?access_token=5742368319.e029fea.479a2b6e77814f78a45770275783e21d";
+
+                    //console.log(endpoint);
+
+                    this.getJSON(endpoint,callback);
+                },
+
+                getJSON:function (url,callback) {
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        dataType: 'jsonp',
+                        success: function (response) {
+                            if(typeof callback === 'function') callback(response);
+                        }
+                    });
+                }
+
+            };
+
+            Instagram.init({
+                client_id: '4591129592.3f279e8.c2ed820af888459688228b4239b20339',
+            })
+
+
+
+
+            function checkAdult(age) {
+                return age == "carousel_media";
+            }
+
+
+            // hàm này để đưa dữ liệu vào html
+
+
+
+
+
+
+
+
+
+            //var btn = document.getElementById('test');
+
+            //btn.addEventListener('click',function () {
+
+
+
+            $('#test').click(function () {
+
+
+
+
+                //Đưa tên ds địa điểm gần vị trí tìm kiếm
+                Instagram.popular(function (response) {
+
+                    var $instagram = $('#instagram');
+                    $instagram.text("");
+
+
+
+                    for(var i =0;i< response.data.length;i++)
+                    {
+                        //$instagram.append('<img src>')
+                        //imageUrl = response.data[i].name;
+                        //$instagram.append('<div>"'+response.data[i].name+'"</div><br>"+response.data[i].id');
+
+
+                        //tonghopduonglink += "<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>";
+                        //$instagram.append("<a href=" + response.data[i].name + "</a>")
+
+                        //$instagram.append("<div>"+response.data[i].name+"</div>");
+
+
+
+                        //<a href="http://vietjack.com" target="_self">Vietjack Homepage</a>
+
+
+                        /* <div>
+                         <!--<button id="test">CLICK HERE</button>-->
+                         <input type="button" id="test" value="CÁC ĐỊA ĐIỂM XUNG QUANH"/>
+                         </div>*/
+
+
+
+
+                        $instagram.append(" <a href="+"#"+">"+response.data[i].name+"</a>");
+                        //&nbsp;
+                        $instagram.append("&nbsp;&nbsp;&nbsp;");
+                        $instagram.append("<input type=\"button\"class=\"mytarget\" id="+response.data[i].id+" value=\"SHOW HÌNH\"/>");
+                        $instagram.append("<br>");
+                        //idlocation = response.data[i].id;
+
+                        idlocation.push(response.data[i].id);
+
+
+
+
+                    }
+
+
+                    $('.mytarget').click(function() {
+                        //alert(this.id); // or alert($(this).attr('id'));
+
+                        tonghopduonglink="";
+
+                        if(this.id != 0 )
+                        {
+                            Instagram.layhinh(this.id, function (response2) {
+                                //console.log("Chạy hàm lấy hình");
+                                //console.log(response.data.length);
+                                var $instagram2 = $('#instagram2');
+                                $instagram2.text("");
+
+                                console.log(response2.data.length + " : " + response2.data[0].location.name);
+
+
+
+
+                                for (var j = 0; j < response2.data.length; j++) {
+                                    //console.log(response2.data.length);
+                                    if ('carousel_media' in response2.data[j]) {
+                                        //console.log(response.data[i].carousel_media.length);
+                                        for (var k = 0; k < response2.data[j].carousel_media.length; k++) {
+                                            //console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                                            //$instagram2.append("<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>");
+
+                                            //$instagram2.append("<br>");
+
+
+                                            //tonghopduonglink += "<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>";
+                                            //tonghopduonglink += "<br>";
+
+
+                                            //<img src="http://webcoban.vn/public/home/img_demo/h1.jpg">
+
+                                            tonghopduonglink += "<img src="+response2.data[j].carousel_media[k].images.standard_resolution.url+">";
+                                            tonghopduonglink += "<br>";
+                                            //console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                                        }
+                                    }
+
+
+                                }
+
+
+                                if(tonghopduonglink == "")
+                                {
+                                    tonghopduonglink += "<br><br><br><div style='color: red'> KHÔNG CÓ HÌNH </div>";
+                                }
+
+                                $instagram2.append(tonghopduonglink);
+
+
+
+
+
+                            });
+
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    });
+
+
+
+                });
+
+
+
+
+
+
+
+                idlocation.forEach(function(item, index, array) {
+
+                    alert(item, index);
+
+                });
+
+
+
+
+
+                var test123456 = 1015787542;
+                //lấy hình OK RỒI
+
+                //for(var i=0;i<idlocation.length;i++)
+                //{
+                //console.log(idlocation[i]);
+
+                //console.log(idlocation[1]);
+
+
+
+                /* Instagram.layhinh(idlocation[1],function (response) {
+                 var $instagram2 = $('#instagram2');
+                 $instagram2.text("");
+
+
+                 //console.log($instagram2).text;
+
+                 for(var i =0 ;i<response.data.length; i++)
+                 {
+                 if('carousel_media' in response.data[i])
+                 {
+                 //console.log(response.data[i].carousel_media.length);
+                 for(var j =0;j<response.data[i].carousel_media.length;j++)
+                 {
+                 console.log(response.data[i].carousel_media[j].images.standard_resolution.url);
+
+                 $instagram2.append("<a href="+response.data[i].carousel_media[j].images.standard_resolution.url+">Link</a>");
+
+                 $instagram2.append("<br>");
+                 }
+                 }
+                 }
+                 });*/
+
+
+
+
+                //đưa link vào
+                /*  Instagram.layhinh(idlocation[0], function (response2) {
+                 var $instagram2 = $('#instagram2');
+                 $instagram2.text("");
+
+                 if(idlocation[0] != 0)
+                 {
+                 //console.log(idlocation.length);
+                 //console.log(response2.data.length);
+
+
+                 for (var j = 0; j < response2.data.length; j++) {
+                 //console.log(response2.data.length);
+                 if ('carousel_media' in response2.data[j]) {
+                 //console.log(response.data[i].carousel_media.length);
+                 for (var k = 0; k < response2.data[j].carousel_media.length; k++) {
+                 //console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                 //$instagram2.append("<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>");
+
+                 //$instagram2.append("<br>");
+
+
+                 //tonghopduonglink += "<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>";
+                 //tonghopduonglink += "<br>";
+                 //console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                 }
+                 }
+                 }
+
+
+                 }
+                 });*/
+
+
+
+
+
+
+                $('#form').on('submit', 'input ' ,function (e) {
+                    e.preventDefault();
+
+                    var tagName = $('#search').val();
+                    Instagram.tagsByname(tagsByname,function () {
+                        var $instagram = $('#instagram');
+                        for(var i =0;i<response.data.length;i++)
+                        {
+                            //imageUrl = response.data[i].image.low
+                        }
+                    });
+                });
+
+                /*            console.log(idlocation.length);
+
+                 for (var i=0;i<idlocation.length;i++)
+                 {
+                 console.log(idlocation[i]);
+                 }*/
+
+
+
+            });
+
+
+
+
+
+
+
+
+            $(document).ready(function () {
+
+
+
+
+
+
+                $('#showhinh').click(function () {
+
+
+
+
+
+                    //console.log(idlocation);
+
+                    var i =15;
+
+                    var b = idlocation.length;
+                    //console.log(idlocation[i])
+
+
+                    for(var i = 0;i<idlocation.length;i++)
+                    {
+                        if(idlocation[i] != 0 )
+                        {
+                            Instagram.layhinh(idlocation[i], function (response2) {
+                                //console.log("Chạy hàm lấy hình");
+                                //console.log(response.data.length);
+                                var $instagram2 = $('#instagram2');
+                                $instagram2.text("");
+
+                                console.log(response2.data.length + " : " + response2.data[0].location.name);
+
+
+
+                                for (var j = 0; j < response2.data.length; j++) {
+                                    //console.log(response2.data.length);
+                                    if ('carousel_media' in response2.data[j]) {
+                                        //console.log(response.data[i].carousel_media.length);
+                                        for (var k = 0; k < response2.data[j].carousel_media.length; k++) {
+                                            //console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                                            //$instagram2.append("<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>");
+
+                                            //$instagram2.append("<br>");
+
+
+                                            tonghopduonglink += "<a href=" + response2.data[j].carousel_media[k].images.standard_resolution.url + ">Link</a>";
+                                            tonghopduonglink += "<br>";
+
+
+                                            console.log(response2.data[j].carousel_media[k].images.standard_resolution.url);
+
+                                        }
+                                    }
+                                }
+                                $instagram2.append(tonghopduonglink);
+
+
+                            });
+
+                        }
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+                });
+            });
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </footer>
+
+
+
+
+</div>
+
+
+
+
+</body>
+</html>
